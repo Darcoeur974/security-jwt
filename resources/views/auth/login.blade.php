@@ -7,7 +7,7 @@
         <div class="card-body m-3">
             <h1 class="card-title">Se connecter</h1>
             <div class="card text-center">
-                <form action="/api/login" method="POST" class="m-5">
+                <form action="/api/login" method="POST" class="m-5" id="login-form">
                     @csrf
                     <div class="form-group">
                         <label for="login-email">E-mail</label>

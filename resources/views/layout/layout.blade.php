@@ -16,7 +16,8 @@
 
     </head>
     <body>
-        <div class="text-center d-flex justify-content-center" id="body">
+        <div class="text-center d-flex flex-column justify-content-center" id="body">
+            @include('_partials.alerts')
             @yield('content')
         </div>
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -19,12 +21,24 @@ class AuthController extends Controller
 
     /**
      * Get a JWT via given credentials.
-     *
-     * @return JsonResponse
+     * @param Request $request
      */
-    public function login()
+    public function login(Request $request)
     {
         session_start();
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+        ],[
+            'required' => 'Le champs :attribute est requis.',
+            'email' => 'Votre E-mail n\'est pas au bon format',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('login')
+                ->withErrors($validator);
+        }
 
         if (isset($_SESSION['locked'])) {
 
@@ -45,7 +59,8 @@ class AuthController extends Controller
                 Log::debug($_SESSION['locked']);
                 Log::debug($credentials);
 
-                return response()->json(['error' => 'You need to wait 10 seconds to login'], 401);
+                return redirect('login')
+                    ->withErrors('Bloqué pendant 10s!');
             }
         }
 
@@ -56,10 +71,10 @@ class AuthController extends Controller
 
             $_SESSION['login_attempts'] += 1;
 
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return redirect('login')->withErrors('Attention!');
         }
 
-        return $this->respondWithToken($token);
+        return redirect('/page')->with($this->respondWithToken($token));
     }
 
     /**

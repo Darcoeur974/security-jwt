@@ -19343,6 +19343,7 @@ module.exports = function(module) {
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+var loginForm = document.getElementById('login-form');
 var password = document.getElementById('password');
 var meter = document.getElementById('password-strength-meter');
 var indicPassword = document.getElementById('indic-password');
@@ -19364,6 +19365,9 @@ password.addEventListener('input', function () {
   } else {
     indicPassword.innerHTML = "";
   }
+});
+loginForm.addEventListener('submit', function (ev) {
+  ev.preventDefault();
 });
 
 /***/ }),

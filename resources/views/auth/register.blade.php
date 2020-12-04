@@ -7,15 +7,6 @@
         <div class="card-body m-3">
             <h1 class="card-title">S'enregistrer</h1>
             <div class="card text-center">
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
                 <form action="/register" method="POST" class="m-5">
                     @csrf
                     <div class="form-group">
@@ -31,8 +22,8 @@
                         <input type="password" id="password" name="password" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="password-confirmation">Mot de passe (confirmation)</label>
-                        <input type="password" id="password-confirmation" name="password-confirmation" class="form-control" required>
+                        <label for="password_confirmation">Mot de passe (confirmation)</label>
+                        <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" required>
                     </div>
                     <div>
                         <meter max="4" id="password-strength-meter" value=""></meter>

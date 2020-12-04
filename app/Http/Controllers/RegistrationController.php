@@ -19,8 +19,6 @@ class RegistrationController extends Controller
      */
     public function register(Request $request) {
 
-        dump($request->all());
-
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email',
@@ -38,22 +36,24 @@ class RegistrationController extends Controller
                 ->withInput();
         }
 
-        $user= DB::table('users')
-            ->where('name', $validator['name'])->get();
+        $validData = $validator->validate();
 
-        if (isset($user)) {
-            return redirect('register')
-                ->withErrors('Cette E-mail est déjà utilisé.')
-                ->withInput();
+        $user= DB::table('users')
+            ->where('email', $validData['email'])->get();
+
+        if ($user->count() !== 0) {
+            if ($user[0]->email === $validData['email']) {
+                return redirect('register')->with('warning', 'Cette E-mail est déjà utilisé.');
+            }
         }
 
         $user = new User();
-        $user->name = $validator['name'];
-        $user->email = $validator['email'];
-        $user->password = Hash::make($validator['password']);
+        $user->name = $validData['name'];
+        $user->email = $validData['email'];
+        $user->password = Hash::make($validData['password']);
 
         $user->save();
 
-        return redirect('/login');
+        return redirect('login')->with('success', 'Votre compte à bien été crée. Vous pouvez dés maintenant vous identifer.');
      }
 }

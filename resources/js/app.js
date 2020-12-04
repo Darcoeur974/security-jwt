@@ -1,10 +1,11 @@
 require('./bootstrap');
 
-let password = document.getElementById('password');
-let meter = document.getElementById('password-strength-meter');
-let indicPassword = document.getElementById('indic-password');
+const loginForm = document.getElementById('login-form');
+const password = document.getElementById('password');
+const meter = document.getElementById('password-strength-meter');
+const indicPassword = document.getElementById('indic-password');
 
-let strength = {
+const strength = {
     0: "Worst",
     1: "Bad",
     2: "Weak",
@@ -26,3 +27,7 @@ password.addEventListener('input', function() {
         indicPassword.innerHTML = "";
     }
 });
+
+loginForm.addEventListener('submit', ev => {
+    ev.preventDefault()
+})
