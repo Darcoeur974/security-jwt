@@ -27,16 +27,10 @@ class AuthController extends Controller
         session_start();
 
         if (isset($_SESSION['locked'])) {
-            Log::debug($_SESSION['locked']);
 
             $timeDiff = time() - $_SESSION['locked'];
-            Log::debug($timeDiff);
 
             if ($timeDiff > 10) {
-
-                Log::debug($_SESSION['locked']);
-                Log::debug($_SESSION['login_attempts']);
-
                 unset($_SESSION['locked']);
                 unset($_SESSION['login_attempts']);
             }
@@ -49,17 +43,18 @@ class AuthController extends Controller
 
                 $_SESSION['locked'] = time();
                 Log::debug($_SESSION['locked']);
+                Log::debug($credentials);
 
                 return response()->json(['error' => 'You need to wait 10 seconds to login'], 401);
             }
         }
 
         if (! $token = auth()->attempt($credentials)) {
+            if (!isset($_SESSION['login_attempts'])) {
+                $_SESSION['login_attempts'] = 1;
+            }
 
             $_SESSION['login_attempts'] += 1;
-
-            Log::debug($credentials);
-            Log::debug($_SESSION['login_attempts']);
 
             return response()->json(['error' => 'Unauthorized'], 401);
         }

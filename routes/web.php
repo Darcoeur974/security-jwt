@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\SignInController;
+use App\Http\Controllers\RegistrationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,8 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/register', [RegistrationController::class, 'register']);
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/signin', [SignInController::class, 'signIn']);
